@@ -1,29 +1,17 @@
-import knex from "knex";
-import { DB_NAME } from "../constant.js";
+import knex from "knex"
+import knexfile from "./knexfile.js"
 
-// Create and export the Knex instance
-const connectDB = async () => {
-    try {
-        const db = knex({
-            client: "pg", // PostgreSQL client
-            connection: {
-                host: process.env.PG_HOST || "127.0.0.1", // Default to localhost
-                user: process.env.PG_USER || "postgres", // Default user
-                password: process.env.PG_PASSWORD || "123", // Default password
-                database: DB_NAME, // Database name from constants
-            },
-        });
+const db = knex(knexfile.development)
 
-        // Test the connection
-        await db.raw("SELECT 1+1 AS result");
-        console.log(`PostgreSQL connected to database: ${DB_NAME}`);
+// Test Query
+// const query = db.select("*").from("users").where("id", 1)
 
-        // Return the database instance for usage
-        return db;
-    } catch (error) {
-        console.error("ERROR:", error.message || error);
-        throw error;
-    }
-};
+// query
+//     .then((result) => {
+//         console.log(result)
+//     })
+//     .catch((error) => {
+//         console.error(error)
+//     })
 
-export default connectDB;
+export default db

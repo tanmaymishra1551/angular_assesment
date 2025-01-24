@@ -65,3 +65,10 @@ Step 4: In anchor tag replace href with routerLink
 <a routerLink="/home">
 
 Step 5: Use router-outlet tag at place where you have to display component.
+
+
+
+
+
+
+
