@@ -23,3 +23,28 @@ Verify in `package.json` file under `dependencies` `"@angular/material` should b
 In `app.module.ts` file import components
 Add selectors in `app.component.html` file
 Add html in `component-name.component.html` file
+
+### How to use tailwindCSS with Angular16
+In root folder (not in src folder)
+Run `npm install -D tailwindcss@3.0.0 postcss autoprefixer`
+Run `npx tailwindcss init`
+Note: `tailwind.config.js` file is created in root folder
+
+`tailwind.config.js`
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    "./src/**/*.{html,ts}",
+  ],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+
+`src/styles.css`
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+### Run Development server (`ng serve`) in root folder not in src folder
