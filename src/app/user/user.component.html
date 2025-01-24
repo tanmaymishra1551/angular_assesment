@@ -1,0 +1,23 @@
+<div class="form-container">
+  <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" placeholder="Enter the title" />
+      <mat-error *ngIf="postForm.get('title')?.hasError('required') && (postForm.get('title')?.touched || postForm.get('title')?.dirty)">
+        Title is required.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field">
+      <mat-label>Content</mat-label>
+      <textarea matInput formControlName="content" placeholder="Enter the content" rows="4"></textarea>
+      <mat-error *ngIf="postForm.get('content')?.hasError('required') && (postForm.get('content')?.touched || postForm.get('content')?.dirty)">
+        Content is required.
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" type="submit" [disabled]="postForm.invalid">
+      Submit
+    </button>
+  </form>
+</div>

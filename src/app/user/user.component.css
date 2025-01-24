@@ -1,0 +1,12 @@
+.form-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field {
+    width: 100%;
+    margin-bottom: 1.5rem;
+}
