@@ -1,0 +1,51 @@
+<!-- users.component.html -->
+<div>
+    <div class="p-4">
+        <div class="flex justify-between items-center mb-4">
+            <input type="text" (input)="fetchUsers()" placeholder="Search by username or email"
+                class="border border-gray-300 px-4 py-2 w-full max-w-md rounded-sm" />
+            <button (click)="openUserDialog()" class="bg-green-600 text-white px-4 py-2 rounded ml-4">
+                Add User
+            </button>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table mat-table [dataSource]="users" class="mat-elevation-z8 w-full">
+                <ng-container matColumnDef="username">
+                    <th mat-header-cell *matHeaderCellDef>
+                        <button class="flex items-center" (click)="toggleSortOrder()">Username</button>
+                    </th>
+                    <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>Email</th>
+                    <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="fullName">
+                    <th mat-header-cell *matHeaderCellDef>Full Name</th>
+                    <td mat-cell *matCellDef="let user">{{ user.fullName }}</td>
+                </ng-container>
+
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let user">
+                        <button (click)="openUserDialog(user)" mat-icon-button color="primary">
+                            <mat-icon>edit</mat-icon>
+                        </button>
+                        <button (click)="deleteUser(user._id)" mat-icon-button color="warn">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="['username', 'email', 'fullName', 'actions']"></tr>
+                <tr mat-row *matRowDef="let row; columns: ['username', 'email', 'fullName', 'actions']"></tr>
+            </table>
+        </div>
+
+        <mat-paginator [pageSize]="5" [length]="totalPages * 5" [pageIndex]="currentPage - 1"
+            (page)="fetchUsers($event.pageIndex + 1)"></mat-paginator>
+    </div>
+</div>

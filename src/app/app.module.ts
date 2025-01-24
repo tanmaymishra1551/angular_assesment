@@ -19,11 +19,18 @@ import { UserComponent } from './user/user.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
+import { UsersComponent } from './users/users.component';
+import { UserDialogComponent } from './user-dialog/user-dialog.component';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { HttpClientModule } from '@angular/common/http';
+import { MatTableModule } from '@angular/material/table';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 const appRoutes: Routes = [
   {path: '', component:HomeComponent},
   {path: 'user', component:UserComponent},
+  {path: 'analytics', component:UsersComponent},
 ]
 
 @NgModule({
@@ -34,7 +41,9 @@ const appRoutes: Routes = [
     FormComponent,
     TableComponent,
     HomeComponent,
-    UserComponent
+    UserComponent,
+    UsersComponent,
+    UserDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +57,10 @@ const appRoutes: Routes = [
     MatFormFieldModule,
     MatInputModule,
     ReactiveFormsModule,
+    MatPaginatorModule,
+    HttpClientModule,
+    MatTableModule,
+    MatDialogModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

@@ -48,3 +48,20 @@ module.exports = {
 @import 'tailwindcss/utilities';
 
 ### Run Development server (`ng serve`) in root folder not in src folder
+
+### Routing
+In `app.module.ts`
+Step 1: import { RouterModule, Routes } from '@angular/router';
+
+Step 2: Make a const with Routes type & path should not contain leading slash
+const appRoutes: Routes = [
+  {path: 'home', component:HomeComponent},
+]
+
+Step 3: In imports add
+RouterModule.forRoot(appRoutes)
+
+Step 4: In anchor tag replace href with routerLink
+<a routerLink="/home">
+
+Step 5: Use router-outlet tag at place where you have to display component.
