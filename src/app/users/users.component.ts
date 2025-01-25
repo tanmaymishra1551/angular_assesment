@@ -1,4 +1,3 @@
-// users.component.ts
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { HttpClient } from '@angular/common/http';
@@ -7,23 +6,17 @@ import { UserDialogComponent } from '../user-dialog/user-dialog.component';
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.css']
+  styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-  users: any[] = [
-    { _id: '1', username: 'johndoe', email: 'johndoe@example.com', fullName: 'John Doe' },
-    { _id: '2', username: 'janedoe', email: 'janedoe@example.com', fullName: 'Jane Doe' },
-    { _id: '3', username: 'bobsmith', email: 'bobsmith@example.com', fullName: 'Bob Smith' },
-    { _id: '4', username: 'alicesmith', email: 'alicesmith@example.com', fullName: 'Alice Smith' },
-    { _id: '5', username: 'charliebrown', email: 'charliebrown@example.com', fullName: 'Charlie Brown' }
-  ];
+  users: any[] = [];
   loading = true;
   currentPage = 1;
   totalPages = 1;
   searchQuery = '';
   sortOrder: 'asc' | 'desc' = 'asc';
 
-  constructor(private http: HttpClient, private dialog: MatDialog) { }
+  constructor(private http: HttpClient, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.fetchUsers();
@@ -31,11 +24,12 @@ export class UsersComponent implements OnInit {
 
   fetchUsers(page: number = 1): void {
     this.loading = true;
-    const url = `http://localhost:8000/api/v1/users/users?page=${page}&limit=5`;
+    const url = `http://localhost:8000/api/v1/users/get?page=${page}&limit=5`;
     this.http.get<any>(url).subscribe(
       (response) => {
         this.users = response.users || [];
         this.totalPages = response.totalPages || 1;
+        this.currentPage = page;
         this.loading = false;
       },
       (error) => {
@@ -72,13 +66,10 @@ export class UsersComponent implements OnInit {
   }
 
   updateUser(user: any): void {
-    const url = `http://localhost:8000/api/v1/users/user/${user._id}`;
+    const url = `http://localhost:8000/api/v1/users/update/${user._id}`;
     this.http.put(url, user).subscribe(
-      (updatedUser: any) => {
-        const index = this.users.findIndex((u) => u._id === updatedUser._id);
-        if (index > -1) {
-          this.users[index] = updatedUser;
-        }
+      () => {
+        this.fetchUsers(this.currentPage); // Refresh table data
       },
       (error) => {
         console.error('Error updating user:', error);
@@ -87,10 +78,10 @@ export class UsersComponent implements OnInit {
   }
 
   createUser(user: any): void {
-    const url = `http://localhost:8000/api/v1/users/createuser`;
+    const url = `http://localhost:8000/api/v1/users/create`;
     this.http.post(url, user).subscribe(
-      (newUser: any) => {
-        this.users.push(newUser);
+      () => {
+        this.fetchUsers(this.currentPage); // Refresh table data
       },
       (error) => {
         console.error('Error creating user:', error);
@@ -100,10 +91,10 @@ export class UsersComponent implements OnInit {
 
   deleteUser(userId: string): void {
     if (confirm('Are you sure you want to delete this user?')) {
-      const url = `http://localhost:8000/api/v1/users/user/${userId}`;
+      const url = `http://localhost:8000/api/v1/users/delete/${userId}`;
       this.http.delete(url).subscribe(
         () => {
-          this.users = this.users.filter((u) => u._id !== userId);
+          this.fetchUsers(this.currentPage); // Refresh table data
         },
         (error) => {
           console.error('Error deleting user:', error);

@@ -66,9 +66,16 @@ Step 4: In anchor tag replace href with routerLink
 
 Step 5: Use router-outlet tag at place where you have to display component.
 
+### Data Sharing 
+1. Parent-Child -> Use @Input() decorator
+NOTE: input value is assigned only after the component is initialized by the Angular framework.
+2. Child-Parent -> User @Output() decorator
+@Output() dataEmitter = new EventEmitter<string>();
 
-
-
+emitData() {
+    this.dataEmitter.emit('Tanmay Mishra');
+  }
+3. Sibling-Sibling
 
 
 
