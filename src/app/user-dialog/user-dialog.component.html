@@ -1,45 +1,33 @@
-<div class="p-6">
-    <h2 class="text-lg font-semibold mb-4">
-        {{ isEditMode ? 'Edit User' : 'Create User' }}
-    </h2>
-    <form [formGroup]="userForm" (ngSubmit)="save()">
-        <mat-form-field appearance="fill" class="w-full mb-4">
+<h2 mat-dialog-title>{{ dialogTitle }}</h2>
+<mat-dialog-content>
+    <form [formGroup]="userForm">
+        <mat-form-field class="w-full">
             <mat-label>Username</mat-label>
             <input matInput formControlName="username" />
-            <mat-error *ngIf="userForm.get('username')?.invalid">
-                Username is required and must be at least 3 characters.
-            </mat-error>
+            <mat-error *ngIf="userForm.get('username')?.invalid">Username is required</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-form-field class="w-full">
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" />
-            <mat-error *ngIf="userForm.get('email')?.invalid">
-                Please enter a valid email.
-            </mat-error>
+            <mat-error *ngIf="userForm.get('email')?.invalid">Valid email is required</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" class="w-full mb-4">
+        <mat-form-field class="w-full">
             <mat-label>Full Name</mat-label>
             <input matInput formControlName="fullName" />
-            <mat-error *ngIf="userForm.get('fullName')?.invalid">
-                Full Name is required.
-            </mat-error>
+            <mat-error *ngIf="userForm.get('fullName')?.invalid">Full name is required</mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" *ngIf="!isEditMode" class="w-full mb-4">
+        <!-- Conditionally show password only for create mode -->
+        <mat-form-field class="w-full" *ngIf="!data.isEditing">
             <mat-label>Password</mat-label>
-            <input matInput type="password" formControlName="password" />
-            <mat-error *ngIf="userForm.get('password')?.invalid">
-                Password is required and must be at least 6 characters.
-            </mat-error>
+            <input matInput formControlName="password" type="password" />
+            <mat-error *ngIf="userForm.get('password')?.invalid">Password is required</mat-error>
         </mat-form-field>
-
-        <div class="flex justify-end mt-4">
-            <button mat-button type="button" (click)="close()">Cancel</button>
-            <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">
-                Save
-            </button>
-        </div>
     </form>
-</div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="onCancel()">Cancel</button>
+    <button mat-button [disabled]="userForm.invalid" (click)="onSubmit()">Save</button>
+</mat-dialog-actions>

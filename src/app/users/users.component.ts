@@ -16,7 +16,7 @@ export class UsersComponent implements OnInit {
   searchQuery = '';
   sortOrder: 'asc' | 'desc' = 'asc';
 
-  constructor(private http: HttpClient, private dialog: MatDialog) {}
+  constructor(private http: HttpClient, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.fetchUsers();
@@ -51,7 +51,20 @@ export class UsersComponent implements OnInit {
   openUserDialog(user: any = null): void {
     const dialogRef = this.dialog.open(UserDialogComponent, {
       width: '400px',
-      data: user ? { ...user } : { username: '', email: '', fullName: '', password: '' },
+      data: user
+        ? {
+          username: '',
+          email: '',
+          fullName: '',
+          password: '',
+          dialogTitle: 'Edit User Details', 
+          isEditing: true                  
+        }
+        : {
+          ...user,
+          dialogTitle: 'Add New User',      
+          isEditing: false                  
+        },
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -64,6 +77,7 @@ export class UsersComponent implements OnInit {
       }
     });
   }
+
 
   updateUser(user: any): void {
     const url = `http://localhost:8000/api/v1/users/update/${user._id}`;

@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TableComponent } from './table.component';
+import { CreateGrnComponent } from './create-grn.component';
 
-describe('TableComponent', () => {
-  let component: TableComponent;
-  let fixture: ComponentFixture<TableComponent>;
+describe('CreateGrnComponent', () => {
+  let component: CreateGrnComponent;
+  let fixture: ComponentFixture<CreateGrnComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TableComponent]
+      declarations: [CreateGrnComponent]
     });
-    fixture = TestBed.createComponent(TableComponent);
+    fixture = TestBed.createComponent(CreateGrnComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

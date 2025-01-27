@@ -1,38 +1,37 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-dialog',
   templateUrl: './user-dialog.component.html',
+  styleUrls: ['./user-dialog.component.css'],
 })
-export class UserDialogComponent implements OnInit {
-  userForm!: FormGroup;
-  isEditMode: boolean = false;
+export class UserDialogComponent {
+  userForm: FormGroup;
+  dialogTitle: string;
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<UserDialogComponent>,
+    public dialogRef: MatDialogRef<UserDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
-  ) {}
-
-  ngOnInit(): void {
-    this.isEditMode = !!this.data?._id;
+  ) {
+    this.dialogTitle = data.dialogTitle || 'User Details';
     this.userForm = this.fb.group({
-      username: [this.data?.username || '', [Validators.required, Validators.minLength(3)]],
-      email: [this.data?.email || '', [Validators.required, Validators.email]],
-      fullName: [this.data?.fullName || '', Validators.required],
-      password: [this.data?._id ? null : '', this.isEditMode ? [] : [Validators.required, Validators.minLength(6)]],
+      username: [data.username || '', [Validators.required]],
+      email: [data.email || '', [Validators.required, Validators.email]],
+      fullName: [data.fullName || '', [Validators.required]],
+      ...(data.isEditing ? {} : { password: ['', [Validators.required]] }), // Password only in create mode
     });
   }
 
-  save(): void {
+  onSubmit(): void {
     if (this.userForm.valid) {
-      this.dialogRef.close(this.userForm.value); // Pass the form data back
+      this.dialogRef.close(this.userForm.value);
     }
   }
 
-  close(): void {
-    this.dialogRef.close(); // Close without saving
+  onCancel(): void {
+    this.dialogRef.close();
   }
 }
