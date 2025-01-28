@@ -20,7 +20,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { HttpClientModule } from '@angular/common/http';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from '@angular/material/dialog';
-import { CreateGrnComponent } from './create-grn/create-grn.component';
+import { GrnStepperComponent } from './create-grn/create-grn.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
@@ -30,10 +30,11 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
+import {MatStepperModule} from '@angular/material/stepper';
 
 const appRoutes: Routes = [
   {path: '', component:HomeComponent},
-  {path: 'user', component:CreateGrnComponent},
+  {path: 'user', component:GrnStepperComponent},
   {path: 'analytics', component:UsersComponent},
 ]
 
@@ -46,7 +47,7 @@ const appRoutes: Routes = [
     UserComponent,
     UsersComponent,
     UserDialogComponent,
-    CreateGrnComponent
+    GrnStepperComponent
   ],
   imports: [
     BrowserModule,
@@ -70,6 +71,7 @@ const appRoutes: Routes = [
     MatDividerModule,
     MatNativeDateModule,
     MatCheckboxModule,
+    MatStepperModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [],

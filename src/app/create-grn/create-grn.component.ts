@@ -1,46 +1,55 @@
-// app/create-grn/create-grn.component.ts
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-create-grn',
+  selector: 'app-grn-stepper',
   templateUrl: './create-grn.component.html',
-  styleUrls: ['./create-grn.component.css']
+  styleUrls: ['./create-grn.component.css'],
 })
-export class CreateGrnComponent {
+export class GrnStepperComponent {
+  isEditable = true;
   grnForm: FormGroup;
+  detailsFormGroup: FormGroup;
+  inventoriesFormGroup: FormGroup;
 
   constructor(private fb: FormBuilder) {
-    this.grnForm = this.fb.group({
+    // Step 1: Details
+    this.detailsFormGroup = this.fb.group({
       company: ['', Validators.required],
       date: ['', Validators.required],
       store: ['', Validators.required],
       remarks: [''],
-      items: this.fb.array([this.createItemGroup()])
     });
-  }
 
-  createItemGroup(): FormGroup {
-    return this.fb.group({
-      itemCategory: ['', Validators.required],
-      item: ['', Validators.required],
-      strain: ['', Validators.required],
-      quantity: ['', [Validators.required, Validators.min(1)]],
-      uom: ['', Validators.required],
-      totalCost: ['', [Validators.required, Validators.min(0)]],
-      costPerUnit: ['', [Validators.required, Validators.min(0)]],
-      supplier: ['', Validators.required],
-      lotName: [''],
-      imported: [false]
+    // Step 2: Inventories
+    this.inventoriesFormGroup = this.fb.group({
+      items: this.fb.array([]),
+    });
+
+    // Parent Form
+    this.grnForm = this.fb.group({
+      details: this.detailsFormGroup,
+      inventories: this.inventoriesFormGroup,
     });
   }
 
   get items(): FormArray {
-    return this.grnForm.get('items') as FormArray;
+    return this.inventoriesFormGroup.get('items') as FormArray;
   }
 
   addItem() {
-    this.items.push(this.createItemGroup());
+    this.items.push(
+      this.fb.group({
+        itemCategory: ['', Validators.required],
+        item: ['', Validators.required],
+        strain: ['', Validators.required],
+        quantity: [null, Validators.required],
+        uom: ['', Validators.required],
+        totalCost: [null, Validators.required],
+        costPerUnit: [null, Validators.required],
+        supplier: ['', Validators.required],
+      })
+    );
   }
 
   removeItem(index: number) {
@@ -49,8 +58,9 @@ export class CreateGrnComponent {
 
   onSubmit() {
     if (this.grnForm.valid) {
-      console.log(this.grnForm.value);
-      // Submit the form
+      console.log('Form Submitted:', this.grnForm.value);
+    } else {
+      console.log('Form is invalid');
     }
   }
 }
