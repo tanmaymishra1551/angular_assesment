@@ -19,6 +19,7 @@ export class GrnStepperComponent {
       date: ['', Validators.required],
       store: ['', Validators.required],
       remarks: [''],
+      documentNumber: [{ value: 'XXX-XXX-XXXX', disabled: true }],
     });
 
     // Step 2: Inventories
@@ -38,23 +39,34 @@ export class GrnStepperComponent {
   }
 
   addItem() {
-    this.items.push(
-      this.fb.group({
-        itemCategory: ['', Validators.required],
-        item: ['', Validators.required],
-        strain: ['', Validators.required],
-        quantity: [null, Validators.required],
-        uom: ['', Validators.required],
-        totalCost: [null, Validators.required],
-        costPerUnit: [null, Validators.required],
-        supplier: ['', Validators.required],
-      })
-    );
+    const itemGroup = this.fb.group({
+      itemCategory: ['Select', Validators.required],
+      item: ['null', Validators.required],
+      quantity: [1, Validators.required],
+      uom: ['kg', Validators.required],
+      totalCost: [0, Validators.required],
+      costPerUnit: [{ value: 0, disabled: true }, Validators.required],
+    });
+
+    // Set up value changes to calculate cost per unit
+    itemGroup.valueChanges.subscribe((value) => {
+      const quantity = value.quantity || 0;
+      const totalCost = value.totalCost || 0;
+
+      const costPerUnit = quantity > 0 ? totalCost / quantity : 0;
+      itemGroup.get('costPerUnit')?.setValue(costPerUnit, { emitEvent: false });
+    });
+
+    // Push the new item group into the form array
+    this.items.push(itemGroup);
+
   }
+
 
   removeItem(index: number) {
     this.items.removeAt(index);
   }
+
 
   onSubmit() {
     if (this.grnForm.valid) {
