@@ -95,7 +95,7 @@ export class UsersComponent implements OnInit {
     const url = `http://localhost:8000/api/v1/users/create`;
     this.http.post(url, user).subscribe(
       () => {
-        this.fetchUsers(this.currentPage); // Refresh table data
+        this.fetchUsers(this.currentPage); 
       },
       (error) => {
         console.error('Error creating user:', error);

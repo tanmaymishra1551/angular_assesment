@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-grn-stepper',
@@ -12,7 +13,7 @@ export class GrnStepperComponent {
   detailsFormGroup: FormGroup;
   inventoriesFormGroup: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private http: HttpClient) {
     // Step 1: Details
     this.detailsFormGroup = this.fb.group({
       company: ['', Validators.required],
@@ -40,9 +41,9 @@ export class GrnStepperComponent {
 
   addItem() {
     const itemGroup = this.fb.group({
-      itemCategory: ['Select', Validators.required],
+      itemCategory: ['null', Validators.required],
       item: ['null', Validators.required],
-      quantity: [1, Validators.required],
+      quantity: [0, Validators.required],
       uom: ['kg', Validators.required],
       totalCost: [0, Validators.required],
       costPerUnit: [{ value: 0, disabled: true }, Validators.required],
@@ -70,7 +71,16 @@ export class GrnStepperComponent {
 
   onSubmit() {
     if (this.grnForm.valid) {
-      console.log('Form Submitted:', this.grnForm.value);
+      const formData = this.grnForm.value;
+      console.log('Form Data:', formData);
+
+      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+      const url =`http://localhost:8000/api/v1/form/create`;
+      this.http.post(url, formData, { headers })
+        .subscribe(
+          (response: any) => console.log('Server Response:', response),
+          (error: any) => console.error('Error:', error)
+        );
     } else {
       console.log('Form is invalid');
     }
