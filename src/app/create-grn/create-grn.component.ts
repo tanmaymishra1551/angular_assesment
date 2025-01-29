@@ -1,19 +1,25 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import {HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { CompanyService } from '../services/company.service';
 
 @Component({
   selector: 'app-grn-stepper',
   templateUrl: './create-grn.component.html',
   styleUrls: ['./create-grn.component.css'],
 })
-export class GrnStepperComponent {
+export class GrnStepperComponent implements OnInit {
   isEditable = true;
   grnForm: FormGroup;
   detailsFormGroup: FormGroup;
   inventoriesFormGroup: FormGroup;
+  companies: string[] = [];  // This will hold the fetched company names
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private http: HttpClient,
+    private companyService: CompanyService
+  ) {
     // Step 1: Details
     this.detailsFormGroup = this.fb.group({
       company: ['', Validators.required],
@@ -34,6 +40,12 @@ export class GrnStepperComponent {
       inventories: this.inventoriesFormGroup,
     });
   }
+  ngOnInit(): void {
+    this.companyService.getCompanies().subscribe((data: string[]) => {
+      this.companies = data; 
+    });
+  }
+
 
   get items(): FormArray {
     return this.inventoriesFormGroup.get('items') as FormArray;
@@ -60,14 +72,11 @@ export class GrnStepperComponent {
 
     // Push the new item group into the form array
     this.items.push(itemGroup);
-
   }
-
 
   removeItem(index: number) {
     this.items.removeAt(index);
   }
-
 
   onSubmit() {
     if (this.grnForm.valid) {
@@ -75,8 +84,9 @@ export class GrnStepperComponent {
       console.log('Form Data:', formData);
 
       const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-      const url =`http://localhost:8000/api/v1/form/create`;
-      this.http.post(url, formData, { headers })
+      const url = `http://localhost:8000/api/v1/form/create`;
+      this.http
+        .post(url, formData, { headers })
         .subscribe(
           (response: any) => console.log('Server Response:', response),
           (error: any) => console.error('Error:', error)

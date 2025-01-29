@@ -68,3 +68,20 @@ export const createDetail = async (req, res) => {
         return res.status(500).json({ message: "Server error" })
     }
 }
+
+export const getCompanyData = async (req, res) => {
+    try {
+        const companies = await db("companies").select("company_name");
+
+        // Check if any data was found
+        if (!companies.length) {
+            return res.status(404).json({ message: "No companies found" });
+        }
+
+        // Send the company data in the response
+        return res.status(200).json({ companies });
+    } catch (err) {
+        console.error("Error fetching company data:", err);
+        return res.status(500).json({ message: "Server error", error: err.message });
+    }
+};

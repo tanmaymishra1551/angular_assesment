@@ -1,4 +1,3 @@
-
 <mat-stepper linear #stepper class="max-h-[90vh] overflow-y-auto">
     <mat-step [stepControl]="detailsFormGroup" [editable]="isEditable">
         <form [formGroup]="detailsFormGroup">
@@ -13,10 +12,13 @@
                         <mat-form-field appearance="fill" class="w-11/12">
                             <mat-label>Select Company</mat-label>
                             <mat-select formControlName="company" required>
-                                <mat-option value="Grow Room">Grow Room</mat-option>
-                                <mat-option value="Waste Store">Waste Store</mat-option>
+                                <mat-option *ngFor="let company of companies" [value]="company">{{ company
+                                    }}</mat-option>
                             </mat-select>
-                            <mat-error *ngIf="detailsFormGroup.get('company')?.invalid && detailsFormGroup.get('company')?.touched">Company is required</mat-error>
+                            <mat-error
+                                *ngIf="detailsFormGroup.get('company')?.invalid && detailsFormGroup.get('company')?.touched">
+                                Company is required
+                            </mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-11/12">
@@ -24,7 +26,9 @@
                             <input matInput [matDatepicker]="picker" formControlName="date" required />
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
-                            <mat-error *ngIf="detailsFormGroup.get('date')?.invalid && detailsFormGroup.get('date')?.touched">Date is required</mat-error>
+                            <mat-error
+                                *ngIf="detailsFormGroup.get('date')?.invalid && detailsFormGroup.get('date')?.touched">Date
+                                is required</mat-error>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-11/12">
@@ -33,7 +37,9 @@
                                 <mat-option value="Grow Room">Grow Room</mat-option>
                                 <mat-option value="Waste Store">Waste Store</mat-option>
                             </mat-select>
-                            <mat-error *ngIf="detailsFormGroup.get('store')?.invalid && detailsFormGroup.get('store')?.touched">Store is required</mat-error>
+                            <mat-error
+                                *ngIf="detailsFormGroup.get('store')?.invalid && detailsFormGroup.get('store')?.touched">Store
+                                is required</mat-error>
                         </mat-form-field>
 
                         <!-- New Disabled Input -->
@@ -57,10 +63,10 @@
             </div>
             <!-- Step 2: Inventories -->
             <div class="container mx-auto p-6 bg-gray-50 overflow-y-auto max-h-[8.0vh]">
-                
+
                 <form [formGroup]="inventoriesFormGroup" (ngSubmit)="onSubmit()" class="space-y-6 ">
                     <mat-card class="shadow-lg rounded-lg border border-gray-200">
-                        
+
 
                         <mat-step [stepControl]="inventoriesFormGroup" [editable]="isEditable">
                             <ng-template matStepLabel>Inventories</ng-template>
@@ -99,7 +105,9 @@
                                                 <mat-option value=" store1">Grow Room</mat-option>
                                                 <mat-option value="store2">Waste Store</mat-option>
                                             </mat-select>
-                                            <mat-error *ngIf="detailsFormGroup.get('store')?.invalid && detailsFormGroup.get('store')?.touched">Store is
+                                            <mat-error
+                                                *ngIf="detailsFormGroup.get('store')?.invalid && detailsFormGroup.get('store')?.touched">Store
+                                                is
                                                 required</mat-error>
                                         </mat-form-field>
 
@@ -109,21 +117,27 @@
                                                 <mat-option value=" store1">Grow Room</mat-option>
                                                 <mat-option value="store2">Waste Store</mat-option>
                                             </mat-select>
-                                            <mat-error *ngIf="detailsFormGroup.get('store')?.invalid && detailsFormGroup.get('store')?.touched">Store is
+                                            <mat-error
+                                                *ngIf="detailsFormGroup.get('store')?.invalid && detailsFormGroup.get('store')?.touched">Store
+                                                is
                                                 required</mat-error>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="fill" class="w-full">
                                             <mat-label>Quantity</mat-label>
                                             <input matInput type="number" formControlName="quantity" required />
-                                            <mat-error *ngIf="item.get('quantity')?.invalid && detailsFormGroup.get('quantity')?.touched">Quantity is
+                                            <mat-error
+                                                *ngIf="item.get('quantity')?.invalid && detailsFormGroup.get('quantity')?.touched">Quantity
+                                                is
                                                 required</mat-error>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="fill" class="w-full">
                                             <mat-label>Unit of Measure</mat-label>
                                             <input matInput formControlName="uom" required />
-                                            <mat-error *ngIf="item.get('uom')?.invalid && detailsFormGroup.get('uom')?.touched">Unit of Measure is
+                                            <mat-error
+                                                *ngIf="item.get('uom')?.invalid && detailsFormGroup.get('uom')?.touched">Unit
+                                                of Measure is
                                                 required</mat-error>
                                         </mat-form-field>
 
@@ -136,9 +150,9 @@
 
                                         <mat-form-field appearance="fill" class="w-full">
                                             <mat-label>Cost Per Unit</mat-label>
-                                            <input matInput type="number" formControlName="costPerUnit"
-                                                />
-                                            <mat-error *ngIf="item.get('costPerUnit')?.invalid && item.get('costPerUnit')?.touched">
+                                            <input matInput type="number" formControlName="costPerUnit" />
+                                            <mat-error
+                                                *ngIf="item.get('costPerUnit')?.invalid && item.get('costPerUnit')?.touched">
                                                 Cost Per Unit is required
                                             </mat-error>
                                         </mat-form-field>
@@ -158,8 +172,6 @@
                                                 <mat-icon>delete</mat-icon>Delete</button>
                                         </div>
                                     </div>
-
-
                                 </div>
                             </div>
                             <!-- Item container ends -->
@@ -171,8 +183,8 @@
                             <mat-card-actions class="flex justify-end space-x-4">
                                 <button mat-button matStepperPrevious>Back</button>
                                 <button mat-raised-button color="accent" type="button">Save as Draft</button>
-                                <button mat-raised-button color="primary" type="submit"
-                                    [disabled]="grnForm.invalid" (click)="onSubmit()">Submit</button>
+                                <button mat-raised-button color="primary" type="submit" [disabled]="grnForm.invalid"
+                                    (click)="onSubmit()">Submit</button>
                             </mat-card-actions>
                         </mat-step>
                     </mat-card>
