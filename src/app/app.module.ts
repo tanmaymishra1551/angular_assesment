@@ -23,6 +23,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatInputModule } from '@angular/material/input';
 import { MatStepperModule } from '@angular/material/stepper';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 // Routing and Component Imports
 import { RouterModule, Routes } from '@angular/router';
@@ -78,6 +79,7 @@ const appRoutes: Routes = [
     MatNativeDateModule,
     MatCheckboxModule,
     MatStepperModule,
+    MatAutocompleteModule,
 
     // Other Modules
     ReactiveFormsModule,

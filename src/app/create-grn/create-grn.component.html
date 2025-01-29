@@ -11,14 +11,14 @@
                     <div class="form p-6">
                         <mat-form-field appearance="fill" class="w-11/12">
                             <mat-label>Select Company</mat-label>
-                            <mat-select formControlName="company" required>
-                                <mat-option *ngFor="let company of companies" [value]="company">{{ company
-                                    }}</mat-option>
-                            </mat-select>
-                            <mat-error
-                                *ngIf="detailsFormGroup.get('company')?.invalid && detailsFormGroup.get('company')?.touched">
-                                Company is required
-                            </mat-error>
+                            <input type="text" matInput [formControl]="companySearchControl"
+                                [matAutocomplete]="autoCompany">
+                            <mat-autocomplete #autoCompany="matAutocomplete"
+                                (optionSelected)="selectCompany($event.option.viewValue)">
+                                <mat-option *ngFor="let company of filteredCompanies | async" [value]="company">
+                                    {{ company }}
+                                </mat-option>
+                            </mat-autocomplete>
                         </mat-form-field>
 
                         <mat-form-field appearance="fill" class="w-11/12">
@@ -113,14 +113,14 @@
 
                                         <mat-form-field appearance="fill" class="w-11/12">
                                             <mat-label>Item</mat-label>
-                                            <mat-select formControlName="item">
-                                                <mat-option value=" store1">Grow Room</mat-option>
-                                                <mat-option value="store2">Waste Store</mat-option>
-                                            </mat-select>
-                                            <mat-error
-                                                *ngIf="detailsFormGroup.get('store')?.invalid && detailsFormGroup.get('store')?.touched">Store
-                                                is
-                                                required</mat-error>
+                                            <input type="text" matInput [formControl]="itemSearchControl"
+                                                [matAutocomplete]="autoItem">
+                                            <mat-autocomplete #autoItem="matAutocomplete"
+                                                (optionSelected)="selectItem($event.option.viewValue, i)">
+                                                <mat-option *ngFor="let item of filteredItems | async" [value]="item">
+                                                    {{ item }}
+                                                </mat-option>
+                                            </mat-autocomplete>
                                         </mat-form-field>
 
                                         <mat-form-field appearance="fill" class="w-full">
